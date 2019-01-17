@@ -61,13 +61,13 @@ public class IPUtil {
 
 	public static String getLocalIP() {
 		String ip = null;
-		if (!System.getProperty("os.name").contains("Win")) {
-			ip = getLinuxLocalIP();
-		} else if (!System.getProperty("os.name").contains("Mac OS")) {
+		if (System.getProperty("os.name").contains("Win")) {
+			ip = getWinLocalIP();
+		} else if (System.getProperty("os.name").contains("Mac OS")) {
 			netWorkCard = "en0";
 			ip = getLinuxLocalIP();
 		} else {
-			ip = getWinLocalIP();
+			ip = getLinuxLocalIP();
 		}
 		return ip;
 	}
@@ -75,16 +75,15 @@ public class IPUtil {
 	public static String getLocalIP(String netWorkName) {
 		String ip = null;
 		netWorkCard = netWorkName + "";
-		if (!System.getProperty("os.name").contains("Win")) {
-			ip = getLinuxLocalIP();
-		}
-		if (!System.getProperty("os.name").contains("Mac OS")) {
+		if (System.getProperty("os.name").contains("Win")) {
+			ip = getWinLocalIP();
+		} else if (System.getProperty("os.name").contains("Mac OS")) {
 			if (Util.isEmpty(netWorkCard)) {
 				netWorkCard = "en0";
 			}
 			ip = getLinuxLocalIP();
 		} else {
-			ip = getWinLocalIP();
+			ip = getLinuxLocalIP();
 		}
 		if (ip == null || ip.trim().length() == 0) {
 			throw new RuntimeException("ip获取异常,请指定网卡名称！");
