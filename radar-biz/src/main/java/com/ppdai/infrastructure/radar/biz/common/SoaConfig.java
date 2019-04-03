@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import com.ppdai.infrastructure.radar.biz.common.thread.SoaThreadFactory;
 import com.ppdai.infrastructure.radar.biz.common.util.Util;
+import com.ppdai.infrastructure.radar.biz.common.util.Utils;
 
 import javax.annotation.PostConstruct;
 

@@ -24,6 +24,7 @@ import com.ppdai.infrastructure.radar.biz.common.util.EmailUtil;
 import com.ppdai.infrastructure.radar.biz.common.util.HttpClient;
 import com.ppdai.infrastructure.radar.biz.common.util.JsonUtil;
 import com.ppdai.infrastructure.radar.biz.common.util.Util;
+import com.ppdai.infrastructure.radar.biz.common.util.Utils;
 import com.ppdai.infrastructure.radar.biz.entity.AppEntity;
 import com.ppdai.infrastructure.radar.biz.entity.InstanceEntity;
 import com.ppdai.infrastructure.radar.biz.service.AppService;
@@ -51,7 +52,7 @@ public class InstanceTimeOutCleaner {
 	@Autowired
 	private AppService appService;
 	@Autowired
-	private Util util;
+	private Utils util;
 
 	@Autowired
 	private EmailUtil emailUtil;
@@ -192,7 +193,7 @@ public class InstanceTimeOutCleaner {
 			if (!doubleCheck(t1, dbNow, 1)) {
 				String content = String.format("心跳时间超过过期时间，被删除,json为:%s,and DbTime is %s", JsonUtil.toJsonNull(t1),
 						dbNow);
-				Util.log(log, t1, "timeout_delete_old", content);
+				Utils.log(log, t1, "timeout_delete_old", content);
 				emailUtil.sendWarnMail(
 						"clearOldInstance,appId:" + t1.getCandAppId() + ",ip:" + t1.getIp() + "长时间为发送心跳，即将删除", content,
 						getMail(t1.getCandAppId()));
@@ -217,7 +218,7 @@ public class InstanceTimeOutCleaner {
 			normalEntity.forEach(t1 -> {
 				String content = String.format("心跳正常，心跳状态变更为1,json为:%s,and DbTime is %s", JsonUtil.toJsonNull(t1),
 						dbNow);
-				Util.log(log, t1, "heartBeatNormal", content);				
+				Utils.log(log, t1, "heartBeatNormal", content);				
 				emailUtil.sendWarnMail(
 							"checkHeartTime,appId:" + t1.getCandAppId() + ",ip:" + t1.getIp() + "心跳正常，服务可用", content,
 							getMail(t1.getCandAppId()));
@@ -255,7 +256,7 @@ public class InstanceTimeOutCleaner {
 				if (!doubleCheck(t1, dbNow, 0)) {
 					String content = String.format("超时，心跳状态变更为0,json为:%s,and DbTime is %s", JsonUtil.toJsonNull(t1),
 							dbNow);
-					Util.log(log, t1, "heartBeatTimeOut", content);					
+					Utils.log(log, t1, "heartBeatTimeOut", content);					
 					emailUtil.sendWarnMail(
 								"checkHeartTime,appId:" + t1.getCandAppId() + ",ip:" + t1.getIp() + "心跳超时，服务可能不可用",
 								content, getMail(t1.getCandAppId()));					
@@ -281,7 +282,7 @@ public class InstanceTimeOutCleaner {
 			String url = String.format("http://%s:%s/radar/client/instance", t1.getIp().trim(), t1.getPort());
 			boolean flag = client.check(url);
 			if (flag) {
-				Util.log(log, t1, "doubleCheck", "服务可用");
+				Utils.log(log, t1, "doubleCheck", "服务可用");
 				try {
 					instanceService.heartBeat(Arrays.asList(t1.getId()));
 					log.info(soaConfig.getLogPrefix() + " is update heartbeat double_check", t1.getId());

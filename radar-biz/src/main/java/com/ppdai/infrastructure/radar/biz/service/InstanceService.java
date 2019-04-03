@@ -17,7 +17,7 @@ import org.springframework.util.StringUtils;
 
 import com.ppdai.infrastructure.radar.biz.common.SoaConfig;
 import com.ppdai.infrastructure.radar.biz.common.util.JsonUtil;
-import com.ppdai.infrastructure.radar.biz.common.util.Util;
+import com.ppdai.infrastructure.radar.biz.common.util.Utils;
 import com.ppdai.infrastructure.radar.biz.dal.InstanceRepository;
 import com.ppdai.infrastructure.radar.biz.dto.RadarConstanst;
 import com.ppdai.infrastructure.radar.biz.dto.client.DeRegisterInstanceRequest;
@@ -79,7 +79,7 @@ public class InstanceService {
 
 	public void save(InstanceEntity entity) {
 		instanceRepository.insert(entity);
-		Util.log(log, entity, "instance_save");
+		Utils.log(log, entity, "instance_save");
 	}
 
 	// key为CandInstanceId，value为id
@@ -109,7 +109,7 @@ public class InstanceService {
 					.findByCandInstanceIds(new ArrayList<>(mapAddRs.keySet()));
 			instanceEntities.forEach(t1 -> {
 				rsMap.put(t1.getCandInstanceId(), t1.getId());
-				Util.log(log, t1, "instance_add");
+				Utils.log(log, t1, "instance_add");
 			});
 		}
 		return rsMap;
@@ -349,7 +349,7 @@ public class InstanceService {
 		data.forEach(t1 -> {
 			instanceIds.add(t1.getId());
 			appIds.put(t1.getAppId(), "");
-			Util.log(log, t1, "is_delete_in_deleteInstance_and_update_version");
+			Utils.log(log, t1, "is_delete_in_deleteInstance_and_update_version");
 		});
 		instanceRepository.deleteByIds(instanceIds);
 		appService.updateVersionByIds(new ArrayList<>(appIds.keySet()));
@@ -657,7 +657,7 @@ public class InstanceService {
 			// 为了记录完整的日志分开记录
 			String idsJson = JsonUtil.toJsonNull(idsMap.keySet());
 			entities.forEach(t1 -> {
-				Util.log(log, t1, "_is_update_pub_status_" + isUp + ",and ids is " + idsJson + "_and_update_version");
+				Utils.log(log, t1, "_is_update_pub_status_" + isUp + ",and ids is " + idsJson + "_and_update_version");
 			});
 			ids.addAll(idsMap.keySet());
 			instanceRepository.updatePubStatus(ids, isUp ? 1 : 0);
@@ -679,7 +679,7 @@ public class InstanceService {
 			// 为了记录完整的日志分开记录
 			String idsJson = JsonUtil.toJsonNull(ids);
 			entities.forEach(t1 -> {
-				Util.log(log, t1,
+				Utils.log(log, t1,
 						"_is_update_instance_status_" + isUp + ",and ids is " + idsJson + "_and_update_version");
 			});
 			instanceRepository.updateInstanceStatus(ids, isUp ? 1 : 0);
@@ -699,7 +699,7 @@ public class InstanceService {
 			// 为了记录完整的日志分开记录
 			String idsJson = JsonUtil.toJsonNull(ids);
 			entities.forEach(t1 -> {
-				Util.log(log, t1, "_is_update_heart_status_" + isUp + ",and ids is " + idsJson + "_and_update_version");
+				Utils.log(log, t1, "_is_update_heart_status_" + isUp + ",and ids is " + idsJson + "_and_update_version");
 			});
 			if (isUp) {
 				instanceRepository.updateHeartStatusUp(ids, expireTime);
@@ -723,7 +723,7 @@ public class InstanceService {
 			// 为了记录完整的日志分开记录
 			String idsJson = JsonUtil.toJsonNull(ids);
 			entities.forEach(t1 -> {
-				Util.log(log, t1,
+				Utils.log(log, t1,
 						"_is_update_supper_status_" + status + ",and ids is " + idsJson + "_and_update_version");
 			});
 			instanceRepository.updateSupperStatus(ids, status);

@@ -33,6 +33,7 @@ import com.ppdai.infrastructure.radar.biz.common.trace.Tracer;
 import com.ppdai.infrastructure.radar.biz.common.trace.spi.Transaction;
 import com.ppdai.infrastructure.radar.biz.common.util.JsonUtil;
 import com.ppdai.infrastructure.radar.biz.common.util.Util;
+import com.ppdai.infrastructure.radar.biz.common.util.Utils;
 import com.ppdai.infrastructure.radar.biz.dal.AppRepository;
 import com.ppdai.infrastructure.radar.biz.dto.base.AppClusterDto;
 import com.ppdai.infrastructure.radar.biz.dto.base.AppClusterMetaDto;
@@ -57,7 +58,7 @@ public class AppCacheService {
 	@Autowired
 	private AppRepository appRepository;
 	@Autowired
-	private Util util;
+	private Utils util;
 	private volatile Date lastDate = new Date();
 	private ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 0L, TimeUnit.MILLISECONDS,
 			new LinkedBlockingQueue<Runnable>(100), SoaThreadFactory.create("AppCacheService", true),
@@ -227,7 +228,7 @@ public class AppCacheService {
 					"and status is %s,and radar cache date is %s,and dbupdatetime is %s, and version is %s,current_max_id_%s_last_max_id_%s,and reint is %s",
 					status, Util.formateDate(now), Util.formateDate(appEntity.getUpdateTime()), appEntity.getVersion(),
 					currentMaxId, maxId, isReinit);
-			Util.log(log, t1, "is_changed", info);
+			Utils.log(log, t1, "is_changed", info);
 		}
 		instanceDto.setWeight(t1.getWeight());
 		instanceDto.setTag(JsonUtil.parseJson(t1.getTag(), new TypeReference<Map<String, String>>() {
